@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎂</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI';overflow:hidden;background:black;color:white;}
+
+/* 🎥 BG VIDEO */
+#bgVideo{
+ position:fixed;width:100%;height:100%;
+ object-fit:cover;z-index:-2;
+}
+.overlay{
+ position:fixed;width:100%;height:100%;
+ background:rgba(0,0,0,0.6);
+ z-index:-1;
+}
+
+/* Layout */
+.container{
+ display:flex;flex-direction:column;
+ justify-content:center;align-items:center;
+ height:100vh;text-align:center;
+}
+.page{display:none;}
+.active{display:flex;}
+
+h1{color:#FFD700;}
+
+/* 🎬 INTRO */
+#intro{
+ position:fixed;width:100%;height:100%;
+ display:flex;justify-content:center;align-items:center;
+ background:black;
+ animation:fadeOut 5s forwards 4s;
+}
+.introText{
+ font-size:32px;color:#FFD700;
+ animation:zoomIn 4s ease;
+}
+@keyframes zoomIn{
+ from{transform:scale(0.5);opacity:0;}
+ to{transform:scale(1);opacity:1;}
+}
+@keyframes fadeOut{
+ to{opacity:0;visibility:hidden;}
+}
+
+/* 🎂 CAKE */
+.cake{margin-top:20px;animation:bounce 2s infinite;}
+@keyframes bounce{50%{transform:translateY(-10px);}}
+.layer{width:220px;height:60px;background:linear-gradient(#8b5a2b,#6b3e26);margin:auto;border-radius:20px;}
+.cream{width:200px;height:15px;background:white;margin:auto;margin-top:-10px;border-radius:10px;}
+.candle{width:10px;height:50px;background:white;margin:auto;position:relative;}
+.flame{
+ width:14px;height:20px;
+ background:radial-gradient(circle,yellow,orange,red);
+ border-radius:50%;
+ position:absolute;top:-25px;
+ animation:flicker .15s infinite;
+}
+@keyframes flicker{50%{transform:scale(.8);}}
+
+/* 📸 SLIDESHOW */
+.slideshow{width:320px;height:220px;position:relative;}
+.slide{
+ position:absolute;width:100%;height:100%;
+ display:flex;justify-content:center;align-items:center;
+ opacity:0;transition:1s;
+}
+.slide.active{opacity:1;}
+
+.slide img,.slide video{
+ max-width:100%;
+ max-height:100%;
+ object-fit:contain;
+ border-radius:10px;
+}
+
+/* 💌 MESSAGE */
+#msg{
+ margin-top:20px;
+ max-width:400px;
+ background:rgba(255,255,255,0.1);
+ padding:15px;border-radius:10px;
+ opacity:0;
+ transform:translateY(20px);
+ transition:0.6s;
+ white-space:pre-wrap;
+}
+#msg.show{
+ opacity:1;
+ transform:translateY(0);
+}
+.typing::after{
+ content:"|";
+ animation:blink .8s infinite;
+}
+@keyframes blink{50%{opacity:0;}}
+
+/* 🎁 Gift */
+.gift{
+ width:100px;height:100px;
+ background:#ff4d88;
+ margin-top:20px;
+ cursor:pointer;
+ position:relative;
+}
+.gift:before{
+ content:"";position:absolute;
+ width:100%;height:25px;
+ background:#ff1a66;
+ top:-25px;
+}
+.gift.open:before{transform:rotateX(120deg);}
+
+/* 🔥 BUTTON */
+button{
+ padding:12px 30px;
+ border:none;border-radius:30px;
+ color:white;
+ background:rgba(255,255,255,0.1);
+ box-shadow:0 0 10px #ff4d88,0 0 20px #ff1a66;
+ cursor:pointer;
+ transition:.3s;
+}
+button:hover{
+ transform:translateY(-3px) scale(1.05);
+ box-shadow:0 0 20px #ff4d88,0 0 40px #ff1a66;
+}
+</style>
+
+<script>
+
+/* Intro */
+setTimeout(()=>{p1.classList.add("active");},5000);
+
+/* Navigation */
+function nextPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+}
+
+/* 🎧 MUSIC */
+function startMusic(){
+ music.currentTime=41;
+ music.play();
+}
+
+/* 📸 SLIDESHOW */
+let cur=0;
+function startSlide(){
+ let slides=document.querySelectorAll(".slide");
+ setInterval(()=>{
+  slides[cur].classList.remove("active");
+  cur=(cur+1)%slides.length;
+  slides[cur].classList.add("active");
+ },3000);
+}
+window.onload=startSlide;
+
+/* 🎂 Candle */
+function blow(){
+ flame.style.display="none";
+ nextBtn.style.display="inline-block";
+}
+
+/* 💌 TEXT ANIMATION */
+function showMsg(){
+
+ let text=`Happy Birthday Day SHREYAA ✨🎂
+
+Aaj toh Sweet Sixteen ke hogye 🤭
+
+Always be happy in life and keep achieving your goals and keep smiling 🙂
+
+Ye meri taraf se ek gift aapke liye 👉👈
+Hope so ye aapko acha lagega`;
+
+ let box=document.getElementById("msg");
+ box.classList.add("show","typing");
+ box.innerHTML="";
+
+ let i=0;
+
+ function type(){
+  if(i<text.length){
+   box.innerHTML+=text[i++];
+   setTimeout(type,20);
+  }else{
+   box.classList.remove("typing");
+  }
+ }
+ type();
+}
+
+/* 🎁 Gift */
+function openGift(el){
+ el.classList.add("open");
+
+ let text=`No matter what happens in life 💖  
+
+I’ll always stand beside you…  
+
+I’m with you forever & ever 🤍`;
+
+ let box=document.getElementById("shayari");
+ box.innerHTML="";
+ let i=0;
+
+ function type(){
+  if(i<text.length){
+   box.innerHTML+=text[i++];
+   setTimeout(type,25);
+  }
+ }
+ type();
+}
+</script>
+
+</head>
+
+<body>
+
+<video autoplay muted loop id="bgVideo">
+<source src="bg.mp4">
+</video>
+
+<div class="overlay"></div>
+
+<audio id="music" loop>
+<source src="song.mp3">
+</audio>
+
+<div id="intro"><div class="introText">A Special Surprise 💖</div></div>
+
+<div class="container page" id="p1">
+<h1>Happy Birthday SHREYAA 🎂</h1>
+<button onclick="startMusic();nextPage('p2')">Start</button>
+</div>
+
+<div class="container page" id="p2">
+<h2>Make a Wish 🎂</h2>
+<div class="cake">
+<div class="candle"><div id="flame" class="flame"></div></div>
+<div class="layer"></div>
+<div class="cream"></div>
+<div class="layer"></div>
+</div>
+<button onclick="blow()">Blow Candle</button>
+<button id="nextBtn" style="display:none;" onclick="nextPage('p3')">Next</button>
+</div>
+
+<div class="container page" id="p3">
+<h2>Memories 📸🎥</h2>
+
+<div class="slideshow">
+
+<div class="slide active"><img src="p1.jpg"></div>
+
+<div class="slide"><video autoplay muted loop><source src="v1.mp4"></video></div>
+
+<div class="slide"><img src="p2.jpg"></div>
+
+<div class="slide"><video autoplay muted loop><source src="v2.mp4"></video></div>
+
+<div class="slide"><img src="p3.jpg"></div>
+
+<div class="slide"><video autoplay muted loop><source src="v3.mp4"></video></div>
+
+</div>
+
+<button onclick="nextPage('p4')">Next</button>
+</div>
+
+<div class="container page" id="p4">
+<button onclick="showMsg()">Open Message 💌</button>
+<div id="msg"></div>
+<button onclick="nextPage('p5')">Final</button>
+</div>
+
+<div class="container page" id="p5">
+<h2>Open Your Gift 🎁</h2>
+<div class="gift" onclick="openGift(this)"></div>
+<div id="shayari"></div>
+</div>
+
+</body>
+</html>
